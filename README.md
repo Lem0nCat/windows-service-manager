@@ -1,6 +1,8 @@
 # Windows Service Manager Scripts
 
-A collection of powerful batch scripts for managing Windows services automatically and manually. Perfect for applications that require specific services to be running only when needed. Includes system-level installation and management tools.
+A collection batch scripts for managing Windows services automatically and manually. Perfect for applications that require specific services to be running only when needed. Includes system-level installation and management tools.
+
+By default, it works for Check Point Endpoint Security VPN. So the goal of the project was to disable services after this software finished running.
 
 ## Features
 
@@ -156,8 +158,6 @@ The status checker provides comprehensive information:
 - **File Status**: Verifies service_manager.bat exists and shows file details
 - **Task Status**: Checks scheduled task installation and execution status
 - **Registry Status**: Validates registry startup entries
-- **Process Status**: Detects currently running instances
-- **Event Log**: Reviews recent execution history
 
 ## Examples
 
