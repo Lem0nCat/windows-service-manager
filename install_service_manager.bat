@@ -35,7 +35,7 @@ echo ======================================
 set "CURRENT_DIR=%~dp0"
 set "SERVICE_NAME=ServiceManager"
 set "SERVICE_DISPLAY_NAME=Service Manager"
-set "SERVICE_DESCRIPTION=Automated system services management"
+set "SERVICE_DESCRIPTION=Automated system services management (by Lem0nCat)"
 set "BATCH_FILE=%CURRENT_DIR%service_manager.bat"
 set "TASK_NAME=ServiceManagerAutorun"
 
