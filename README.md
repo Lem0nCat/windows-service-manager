@@ -4,6 +4,9 @@ A collection batch scripts for managing Windows services automatically and manua
 
 By default, it works for Check Point Endpoint Security VPN. So the goal of the project was to disable services after this software finished running.
 
+## Documentation in other languages
+- [Russian (Русский)](README_RU.md) :ru:
+
 ## Features
 
 - **Automatic Service Management**: Monitor processes and automatically start/stop services
