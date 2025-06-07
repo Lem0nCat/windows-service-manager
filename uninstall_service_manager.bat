@@ -34,6 +34,7 @@ echo ======================================
 set "SERVICE_NAME=ServiceManager"
 set "TASK_NAME=ServiceManagerAutorun"
 set "CURRENT_DIR=%~dp0"
+set "VBS_FILE=%CURRENT_DIR%run_hidden.vbs"
 
 :: Remove scheduled task
 echo Checking for scheduled task...
@@ -61,17 +62,32 @@ if !errorlevel! equ 0 (
 
 :: Try to stop any running instances
 echo Checking for running service_manager.bat processes...
-tasklist /fi "imagename eq cmd.exe" /fi "windowtitle eq service_manager.bat*" >nul 2>&1
+tasklist /fi "imagename eq cmd.exe" >nul 2>&1
 if !errorlevel! equ 0 (
-    echo Found running service_manager processes. Attempting to stop...
-    taskkill /fi "windowtitle eq service_manager.bat*" /f >nul 2>&1
+    echo Attempting to stop service_manager processes...
+    wmic process where "name='cmd.exe' and commandline like '%%service_manager.bat%%'" delete >nul 2>&1
 )
 
-:: Remove wrapper file if exists
-set "WRAPPER_FILE=%CURRENT_DIR%service_wrapper.bat"
-if exist "%WRAPPER_FILE%" (
-    echo Removing auxiliary files...
-    del "%WRAPPER_FILE%" >nul 2>&1
+:: Stop any VBS processes
+echo Checking for VBS launcher processes...
+tasklist /fi "imagename eq wscript.exe" >nul 2>&1
+if !errorlevel! equ 0 (
+    echo Stopping VBS processes related to service manager...
+    wmic process where "name='wscript.exe' and commandline like '%%run_hidden.vbs%%'" delete >nul 2>&1
+)
+
+:: Remove VBS file (optional - ask user)
+if exist "%VBS_FILE%" (
+    set /p REMOVE_VBS="Remove VBS launcher file? (y/n): "
+    if /i "!REMOVE_VBS!"=="y" (
+        echo Removing VBS launcher file...
+        del "%VBS_FILE%" >nul 2>&1
+        if !errorlevel! equ 0 (
+            echo VBS file removed successfully!
+        )
+    ) else (
+        echo VBS file kept for manual use.
+    )
 )
 
 echo.
@@ -81,8 +97,9 @@ echo ======================================
 echo.
 echo All autostart configurations have been removed:
 echo   - Scheduled task removed
-echo   - Registry startup entry removed
+echo   - Registry startup entry removed  
 echo   - Running processes terminated
+echo   - VBS launcher handled per user choice
 echo.
 echo Your service_manager.bat file remains unchanged.
 echo.
